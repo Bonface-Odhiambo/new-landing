@@ -1,5 +1,18 @@
+// Define possible value types that can appear in ComponentConfig
+export type ComponentConfigValue = 
+  | string 
+  | number 
+  | boolean 
+  | Array<{ 
+      title?: string;
+      description?: string;
+      question?: string;
+      answer?: string;
+    }>;
+
+// Replace 'any' with specific type
 export type ComponentConfig = {
-  [key: string]: any;
+  [key: string]: ComponentConfigValue;
 };
 
 export type KeywordConfig = {

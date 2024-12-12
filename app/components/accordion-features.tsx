@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Image from 'next/image';
 import TestimonialSingle from "./testimonial-single";
 import feature1 from "../../public/feature_1.gif";
 import feature2 from "../../public/feature_2.png";
@@ -176,96 +177,43 @@ export default function AccordionFeatures() {
         <div className="flex flex-col gap-12 md:flex-row md:gap-24">
           <div className="grid grid-cols-1 items-stretch gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-24">
             <ul className="w-full">
-              {features.map((feature) => (
-                <li
-                  key={feature.id}
-                  className={feature.id !== features.length ? "border-b" : ""}
-                >
-                  <button
-                    className="relative flex w-full items-center gap-2 py-4 text-left text-base font-medium md:text-lg"
-                    aria-expanded={activeFeature === feature.id}
+            {features.map((feature) => (
+                  <li
+                    key={feature.id}
+                    className={`cursor-pointer p-4 border-b ${
+                      activeFeature === feature.id ? "bg-blue-50" : ""
+                    }`}
                     onClick={() => setActiveFeature(feature.id)}
                   >
-                    <span
-                      className={`duration-100 ${
-                        activeFeature === feature.id
-                          ? "font-bold text-blue-600"
-                          : ""
-                      }`}
-                    >
-                      {feature.id}.{" "}
-                    </span>
-                    <span
-                      className={`flex-1 text-slate-700 ${
-                        activeFeature === feature.id
-                          ? "font-bold text-blue-600"
-                          : ""
-                      }`}
-                    >
-                      <h3 className="inline">{feature.title}</h3>
-                    </span>
-                    <span className="ml-auto">
-                      <svg
-                        className="ml-auto h-[10px] w-[10px] flex-shrink-0 fill-slate-600"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <rect
-                          y="7"
-                          width="16"
-                          height="2"
-                          rx="1"
-                          className={`origin-center transform transition duration-200 ease-out ${
-                            activeFeature === feature.id ? "rotate-180" : ""
-                          }`}
-                        />
-                        <rect
-                          y="7"
-                          width="16"
-                          height="2"
-                          rx="1"
-                          className={`origin-center rotate-90 transform transition duration-200 ease-out ${
-                            activeFeature === feature.id
-                              ? "hidden rotate-180"
-                              : ""
-                          }`}
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                  <div
-                    className="overflow-hidden text-slate-700 transition-all duration-300 ease-in-out"
-                    style={{
-                      maxHeight: activeFeature === feature.id ? "1000px" : "0",
-                      opacity: activeFeature === feature.id ? 1 : 0,
-                    }}
-                  >
-                    <div className="pb-8">
-                      <div className="leading-relaxed text-slate-600">
-                        <p>{feature.description}</p>
-                      </div>
-                      <div className="mt-4 space-y-1.5">
-                        {Array.isArray(feature.additionalInfo) ? (
-                          feature.additionalInfo.map((info, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center gap-1.5 text-sm font-medium text-slate-700"
-                            >
-                              {feature.icons?.[index]}
-                              {info}
-                            </div>
-                          ))
-                        ) : (
-                          <div className="flex items-center gap-1.5 text-sm font-medium text-slate-700">
-                            {feature.icons}
-                            {feature.additionalInfo}
-                          </div>
-                        )}
+                    <div className="flex items-center gap-4">
+                      <Image
+                        src={feature.image}
+                        alt={`Feature ${feature.id}: ${feature.title}`}
+                        width={100}
+                        height={100}
+                        className="rounded"
+                      />
+                      <div>
+                        <h3 className="font-bold text-lg">{feature.title}</h3>
+                        <p className="text-sm text-gray-600">{feature.description}</p>
                       </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                    {activeFeature === feature.id && (
+                      <div className="mt-4">
+                        <ul className="list-disc pl-5 text-gray-800">
+                          {feature.additionalInfo.map((info, index) => (
+                            <li key={index}>{info}</li>
+                          ))}
+                        </ul>
+                        <div className="flex gap-2 mt-2">
+                          {feature.icons.map((icon, index) => (
+                            <span key={index}>{icon}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                ))}
             </ul>
             <div className="">
               {features.map((feature) => (

@@ -18,9 +18,10 @@ export const generateMetadata = ({
 }: {
   params: { keyword: string };
 }) => {
+  const decodedKeyword = decodeURIComponent(params.keyword).replace(/-/g, " ");
   return getSEOTags({
-    title: `Eclipse for ${params.keyword}`,
-    description: `Eclipse helps with ${params.keyword}. Quick order handling, fast funds access, and great paper quality.`,
+    title: `Eclipse for ${decodedKeyword}`, // Using decoded keyword for better SEO title
+    description: `Eclipse helps with ${decodedKeyword}. Quick order handling, fast funds access, and great paper quality.`,
     canonicalUrlRelative: `/${params.keyword}`,
   });
 };
@@ -30,6 +31,7 @@ export async function generateStaticParams() {
     keyword: keyword.replace(/\s+/g, "-").toLowerCase(),
   }));
 }
+
 function isValidKeyword(keyword: string): boolean {
   return keywords
     .map((k) => k.replace(/\s+/g, "-").toLowerCase())
@@ -44,8 +46,7 @@ export default function KeywordPage({
   if (!isValidKeyword(params.keyword)) {
     return redirect("/");
   }
-  //Use the decoded keyword when needed
-  const decodedKeyword = decodeURIComponent(params.keyword).replace(/-/g, " ");
+
   const config = keywordConfigs[params.keyword] || {};
 
   return (
